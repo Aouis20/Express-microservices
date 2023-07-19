@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema({
         "The password must contain at least 8 characters, including at least 1 number and 1 special character.",
     },
   },
+  role: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 userSchema.plugin(uniqueValidator);

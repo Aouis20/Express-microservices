@@ -48,3 +48,22 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.getUserInfoFromToken = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+      if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+    res.status(200).json({
+      id: req.auth.userId,
+      role: req.auth.role,
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message || "Error occured while retrieving user information."
+    })
+  }
+}
