@@ -1,0 +1,42 @@
+version: '3'
+services:
+  auth:
+    build:
+      context: auth
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    depends_on:
+      - db
+    volumes:      
+      - /auth/node_modules
+      - ./auth:/auth
+
+  api-gateway:
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    links:
+      - auth
+    depends_on:
+      - auth
+    volumes:      
+      - /api/node_modules
+      - ./api-gateway:/api
+
+  db:
+    image: mongo:latest
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: aouiscbpro
+    #   MONGO_INITDB_ROOT_PASSWORD: 2OivCgrd62RGfd1C
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    container_name: mongodb
+
+volumes:
+  mongo_data:
+
